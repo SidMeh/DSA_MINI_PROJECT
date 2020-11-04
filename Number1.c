@@ -66,7 +66,7 @@ int main() {
 	printf("\n");
 	traverse_fwd(s->l[s->top]);
 	
-	char c4[4] = "110";
+	char c4[6] = "46000";
 	push_opd(&S,c4);
 //	printf("%d ",s->top);
 	printf("\n");
@@ -81,6 +81,7 @@ int main() {
 	//add(&S);
 	//subtract(&S);
 	divide(&S);
+	add(&S);
 	printf("\n");
 	traverse_fwd(s->l[s->top]);
 
@@ -231,7 +232,7 @@ void add(stack *s) {
 }
 
 void pop_opd(stack *s) {
-	delete(&s->l[s->top]);
+//	delete(&s->l[s->top]);
 	s->top = s->top - 1;
 }
 
@@ -426,108 +427,67 @@ void multiply(stack *s) {
 //	printf("%d",s->top);
 	s->l[s->top] = l3;
 }
-		
-void divide(stack *s) {
-	int k, carry = 0,borrow = 0, i, result;				
-	list l3, one, p, q, p1, q1, l, l1, one1, one2, l2;
-	init(&l3);
-	init(&one);
-	init(&l);
-	insert_beg(&l,0);
-	l1 = l;
-	one1 = one;
-	insert_beg(&one,1);
-	insert_beg(&l3,0);
-	p = s->l[s->top];
-	q = s->l[s->top - 1];
-	while(p->next)
-		p = p->next;
-	p1 = p;
-	while(q->next)
-		q = q->next;	
-	q1 = q;
-	while(one1->next)
-		one1 = one1->next;
-	one2 = one1;
-/*	while(l1->next)
-		l1 = l1->next;
-	l2 = l1;
-	
-	while(1) {
-	
-		while(s->l[s->top]->data == 0) {
-			pop_once(&s->l[s->top],0);
-		} 
 
-		while(s->l[s->top - 1]->data == 0) {
-			pop_once(&s->l[s->top - 1],0);
-		} 
+
+void divide(stack *s) {
+
+	list base = s->l[s->top],p,q;
+	int k, flag;
+	stack f,*d;
+	init_opd(&f);
+	d = &f;
+	char c_1[2] = "1";
+	char c_d[2] = "0";
+	push_opd(&f,c_d);
+	push_opd(&f,c_1);
+	traverse_fwd(d->l[d->top]);
+	traverse_fwd(d->l[d->top - 1]);
+	list one = d->l[d->top];
+	int i = 5;
+	while(1) {
+
 		
 		k = len(s->l[s->top]) - len(s->l[s->top - 1]);
-		
-		if(k > 0) {
-			
+		if(k>0)
 			break;
-		}
-		else if(k < 0) {
-			for(i=0;i< k; i++) {
-				insert_beg(&s->l[s->top - 1],0);
+		if(k == 0) {
+			p = s->l[s->top];
+			q = s->l[s->top - 1];
+			int flag = 2;
+			while(p && q) {               //checks which list is bigger
+				if(p->data > q->data) {
+					flag = 1;				//	q is to be subtracted from p
+					break;
+				}
+				else if(q->data > p->data) {    // p is to be subtracted from q
+					flag = 0;
+					break;
+				}
+				p = p->next;
+				q = q->next;
 			}
-		}		
+		     if(flag == 1)
+		     	break;
+		}
 		
-		q1 = q;
-		p1 = p;
-		delete(&l3);
-		while(p1 && q1) {
-			if(p1->data >= (q1->data+borrow)){
-				result = q->data - (p->data + borrow);
-				insert_beg(&l3,result);
-				borrow = 0;
-			}
-			else if(p1->data <(q1->data+borrow)){
-				result = 10 + p1->data - (q1->data + borrow);
-				insert_beg(&l3,result);
-				borrow = 1;
-			}
-			p1 = p1->prev;
-			q1 = q1->prev;
-		}
-		s->l[s->top - 1] = l3;
-		k = len(l) - len(one);
-	
-		if(k < 0) {
-			for(i=0;i< -1*k; i++) {
-				insert_beg(&l,0);
-			}
-		}
-		else if(k > 0) {
-			for(i=0;i< k; i++) {
-				insert_beg(&one,0);
-			}
-		}
-		one2 = one1;
-		l2 = l1;
-		while(one2 && l2) {
-			l2->data = (l2->data + one2->data + carry)%10;
-			carry = (l2->data + one2->data + carry)/10;
-			l2 = l2->prev;
-			one2 = one2->prev;
-		}
-		if(one2->prev)
-			one2->prev->data = one2->prev->data + 1;
-		else
-			insert_beg(&one2,1);
-		carry = 0;
-	}
-
-	traverse_fwd(one);*/
+		subtract(s);
+		add(&f);
+		d->top = d->top + 1;
+		s->top = s->top +1;
+		s->l[s->top] = base;
+		d->l[d->top] = one;
+		
+     }
+     printf("\n");
+     traverse_fwd(d->l[d->top - 1]);
+     printf("\n");
+     pop_opd(s);
+     pop_opd(s);
+     s->top++;
+     s->l[s->top] = d->l[d->top - 1];
+   //  traverse_fwd(s->l[s->top - 1]);
+     
 }
-
-
-
-
-
-
 
 
 
