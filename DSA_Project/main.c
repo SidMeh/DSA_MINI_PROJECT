@@ -23,12 +23,14 @@ int main() {
 
 */
 int main() {
+	FILE *fp;
+	fp = fopen("History.txt","w");
 	init_opd(&s);
 	opt_init(&q,100);
 	printf("Enter a string : \n");
-	char c[1000];
-	gets(c);
-//	char c[100000] = "15 * 2";
+//	char c[1000];
+//	gets(c);
+	char c[100000] = " 220 /     2";
 	char *psr = c;
 	evaluate(c);
 	printf("The result is : \n");

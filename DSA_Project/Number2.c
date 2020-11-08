@@ -69,23 +69,23 @@ int main() {
 	printf("\n");
 	traverse_fwd(s->l[s->top]);
 	
-	char c4[10] = "14";
+	char c4[10] = "12";
 	push_opd(&S,c4);
 //	printf("%d ",s->top);
 	printf("\n");
 	traverse_fwd(s->l[s->top]);
 	
-	char c5[300] = "50";
+	char c5[300] = "2";
 	push_opd(&S,c5);
 //	printf("%d ",s->top);
 	printf("\n");
 	traverse_fwd(s->l[s->top]);
 //	power(&S);
-	multiply(&S);
+//	multiply(&S);
 //	add(&S);
 //	subtract(&S);
 //	subtract(&S);
-//	divide(&S);
+	divide(&S);
 //	add(&S);
 //	mod(&S);
 	printf("\n");
@@ -246,7 +246,7 @@ void add(stack *s) {
 }
 
 void pop_opd(stack *s) {
-//	delete(&s->l[s->top]);
+//	delete1(&s->l[s->top]);
 	s->top = s->top - 1;
 }
 
@@ -276,7 +276,7 @@ int subtract(stack *s) {
 		list temp;
 		temp = s->l[s->top];
 		s->l[s->top] = s->l[s->top - 1];
-		s->l[s->top] = temp;
+		s->l[s->top - 1] = temp;
 		s->sign[s->top] = 1;
 		s->sign[s->top-1] = 1;
 		subtract(s);
@@ -533,7 +533,7 @@ void divide(stack *s) {
 		     if(flag == 1)
 		     	break;
 		}
-		
+		   printf("\n123");
 		t =	subtract(s);
 		if(t){
 		/*	if(len(s->l[s->top]) <= 2)
@@ -552,14 +552,14 @@ void divide(stack *s) {
 		d->l[d->top] = one;
 		
      }
-     printf("\n");
+     printf("\n123");
      traverse_fwd(d->l[d->top - 1]);
-     printf("\n");
+     printf("\n123");
      pop_opd(s);
      pop_opd(s);
      s->top++;
-     s->l[s->top] = d->l[d->top - 1];
-   //  traverse_fwd(s->l[s->top - 1]);
+     s->l[s->top] = d->l[d->top-1];
+     traverse_fwd(s->l[s->top - 1]);
      s->sign[s->top] = ss;
 }
 
@@ -637,6 +637,9 @@ void multiply(stack *s) {
 */
 
 void mod(stack *s) {
+	int ss;
+	ss = s->sign[s->top] * s->sign[s->top - 1];
+	s->sign[s->top] = 1;
 	stack d;
 	init_opd(&d);
 	list p = s->l[s->top-1];
@@ -708,13 +711,15 @@ void mod(stack *s) {
 	}	
 	printf("\n");
 	traverse_fwd(d.l[d.top-1]);
-	pop_opd(s);
-     pop_opd(s);
-     s->top++;
-     s->l[s->top] = d.l[d.top - 1];
+ s->l[s->top] = d.l[d.top - 1];
+    s->sign[s->top] = ss;
 }
 
 void multiply(stack *s){
+	int ss;
+	ss = s->sign[s->top] * s->sign[s->top - 1];
+	s->sign[s->top] = 1;
+   
 	list r;
 	init(&r);
 	list t;
@@ -797,6 +802,7 @@ void multiply(stack *s){
     pop_opd(s);
     s->top++;
     s->l[s->top] = g.l[0];
+    s->sign[s->top] = ss;
 	//traverse_fwd(d.l[d.top-1]);
 }
 

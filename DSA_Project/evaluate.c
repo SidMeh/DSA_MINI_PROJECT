@@ -27,18 +27,18 @@ typedef struct token{
 void evaluate(char *ch);
 int precedence(char op);
 void applyop(char op);
-/*
+
 int main() {
 	init_opd(&s);
 	opt_init(&q,100);
 	printf("Enter a string : ");
-	char c[100000] = "6 * 6";
+	char c[100000] = "60 ^ 6";
 	char *psr = c;
 	evaluate(c);
 	printf("The result is : \n");
 	traverse_fwd(s.l[s.top]);
 return 0;
-}*/
+}
 //printf("Worked fine");
 void evaluate(char *c) {
 	char op;
@@ -279,7 +279,9 @@ void applyop(char op){
 
 
 void power(stack *s) {
-
+	int ss;
+	ss = s->sign[s->top] * s->sign[s->top - 1];
+	s->sign[s->top] = 1;
 	stack d; //Meant for multiplication
 	stack g;  //Meant for subtraction
 	init_opd(&d);
@@ -345,7 +347,12 @@ void power(stack *s) {
 			p = p->next;
 		}
 	divide(&d);*/
-	printf("No");
+	printf("No  ");
+		pop_opd(s);
+    pop_opd(s);
+    s->top++;
+    s->l[s->top] = d.l[d.top-1];
+    s->sign[s->top] = ss;
 	traverse_fwd(d.l[d.top-1]);
 }
 
